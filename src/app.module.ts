@@ -5,6 +5,7 @@ import { Env } from './env.model';
 
 import { UsersModule } from './users/users.module';
 import { ReqresApiModule } from './reqres-api/reqres-api.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ReqresApiModule } from './reqres-api/reqres-api.module';
     }),
     UsersModule,
     ReqresApiModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
