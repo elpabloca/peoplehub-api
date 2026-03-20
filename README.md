@@ -57,6 +57,13 @@ $ pnpm run test:e2e
 $ pnpm run test:cov
 ```
 
+# Docker
+
+docker compose up -d # Start the services in the background
+docker compose down # Stop the services
+docker compose down -v # Stop the services and remove the volumes
+docker compose ps # List the services
+
 ## Deployment
 
 When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
