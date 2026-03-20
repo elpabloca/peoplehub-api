@@ -12,9 +12,9 @@ export class ReqresApiService {
     private config: ConfigService,
   ) {}
 
-  async getUsers(): Promise<UsersResponse> {
+  async getUsers(page = 1): Promise<UsersResponse> {
     try {
-      return await this.request<UsersResponse>('/users');
+      return await this.request<UsersResponse>(`/users?page=${page}`);
     } catch {
       throw new HttpException('Error fetching users', HttpStatus.BAD_GATEWAY);
     }
@@ -39,30 +39,16 @@ export class ReqresApiService {
     }
   }
 
-  private getBaseConfig() {
-    return {
-      baseUrl: this.config.get<string>('API_URL'),
-      apiKey: this.config.get<string>('API_KEY'),
-    };
-  }
-
   private async request<T>(
     endpoint: string,
     method: 'GET' | 'POST' = 'GET',
     data?: unknown,
   ) {
-    const baseUrl = this.config.get<string>('REQRES_URL_BASE');
-    const apiKey = this.config.get<string>('PEOPLE_HUB_REQRES_APY_KEY');
-
     const res = await firstValueFrom(
       this.http.request<T>({
-        url: `${baseUrl}${endpoint}`,
+        url: `${endpoint}`,
         method,
         data,
-        headers: {
-          'x-api-key': apiKey ?? '',
-          'Content-Type': 'application/json',
-        },
       }),
     );
 

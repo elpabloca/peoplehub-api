@@ -1,6 +1,7 @@
 export interface Env {
-  PEOPLE_HUB_REQRES_APY_KEY: string;
+  REQRES_API_KEY: string;
   REQRES_URL_BASE: string;
+  REQRES_TIMEOUT: number;
   POSTGRES_HOST: string;
   POSTGRES_PORT: number;
   POSTGRES_DB: string;

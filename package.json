@@ -2,7 +2,7 @@
   "name": "peoplehub-api",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Pablo Calle",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
