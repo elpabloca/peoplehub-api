@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-import { UsersResponse } from './reqres-api.types';
+import { LoginResponse, UsersResponse } from './reqres-api.types';
 
 @Injectable()
 export class ReqresApiService {
@@ -12,21 +12,30 @@ export class ReqresApiService {
     private config: ConfigService,
   ) {}
 
-  async getUsers() {
+  async getUsers(): Promise<UsersResponse> {
     try {
-      const { baseUrl, apiKey } = this.getBaseConfig();
-
-      const res = await firstValueFrom(
-        this.http.get<UsersResponse>(`${baseUrl}/users`, {
-          headers: {
-            'x-api-key': apiKey ?? '',
-          },
-        }),
-      );
-
-      return res.data;
+      return await this.request<UsersResponse>('/users');
     } catch {
-      throw new HttpException('External API failed', HttpStatus.BAD_GATEWAY);
+      throw new HttpException('Error fetching users', HttpStatus.BAD_GATEWAY);
+    }
+  }
+
+  async getUserById(id: number): Promise<UsersResponse> {
+    try {
+      return await this.request<UsersResponse>(`/users/${id}`);
+    } catch {
+      throw new HttpException('Error fetching user', HttpStatus.BAD_GATEWAY);
+    }
+  }
+
+  async login(email: string, password: string) {
+    try {
+      return await this.request<LoginResponse>('/login', 'POST', {
+        email,
+        password,
+      });
+    } catch {
+      throw new HttpException('Login failed', HttpStatus.UNAUTHORIZED);
     }
   }
 
@@ -35,5 +44,28 @@ export class ReqresApiService {
       baseUrl: this.config.get<string>('API_URL'),
       apiKey: this.config.get<string>('API_KEY'),
     };
+  }
+
+  private async request<T>(
+    endpoint: string,
+    method: 'GET' | 'POST' = 'GET',
+    data?: unknown,
+  ) {
+    const baseUrl = this.config.get<string>('REQRES_URL_BASE');
+    const apiKey = this.config.get<string>('PEOPLE_HUB_REQRES_APY_KEY');
+
+    const res = await firstValueFrom(
+      this.http.request<T>({
+        url: `${baseUrl}${endpoint}`,
+        method,
+        data,
+        headers: {
+          'x-api-key': apiKey ?? '',
+          'Content-Type': 'application/json',
+        },
+      }),
+    );
+
+    return res.data;
   }
 }
