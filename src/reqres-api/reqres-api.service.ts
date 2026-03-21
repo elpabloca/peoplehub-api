@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-import { LoginResponse, UsersResponse } from './reqres-api.types';
+import { LoginResponse, UsersResponse, UserResponse } from './reqres-api.types';
 
 @Injectable()
 export class ReqresApiService {
@@ -16,9 +16,9 @@ export class ReqresApiService {
     }
   }
 
-  async getUserById(id: number): Promise<UsersResponse> {
+  async getUserById(id: number): Promise<UserResponse> {
     try {
-      return await this.requestApi<UsersResponse>(`/users/${id}`);
+      return await this.requestApi<UserResponse>(`/users/${id}`);
     } catch {
       throw new HttpException('Error fetching user', HttpStatus.BAD_GATEWAY);
     }

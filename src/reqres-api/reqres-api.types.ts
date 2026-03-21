@@ -6,6 +6,10 @@ export type User = {
   avatar: string;
 };
 
+export type UserResponse = {
+  data: User;
+};
+
 export type UsersResponse = {
   data: User[];
 };
