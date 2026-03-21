@@ -1,4 +1,4 @@
-export type User = {
+export type UserReqres = {
   id: number;
   email: string;
   first_name: string;
@@ -6,12 +6,12 @@ export type User = {
   avatar: string;
 };
 
-export type UserResponse = {
-  data: User;
+export type UserReqresResponse = {
+  data: UserReqres;
 };
 
-export type UsersResponse = {
-  data: User[];
+export type UsersReqresResponse = {
+  data: UserReqres[];
 };
 
 export type LoginRequest = {

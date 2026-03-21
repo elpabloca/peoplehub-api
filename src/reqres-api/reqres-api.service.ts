@@ -2,23 +2,27 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-import { LoginResponse, UsersResponse, UserResponse } from './reqres-api.types';
+import {
+  LoginResponse,
+  UsersReqresResponse,
+  UserReqresResponse,
+} from './reqres-api.types';
 
 @Injectable()
 export class ReqresApiService {
   constructor(private http: HttpService) {}
 
-  async getUsers(page = 1): Promise<UsersResponse> {
+  async getUsers(page = 1): Promise<UsersReqresResponse> {
     try {
-      return await this.requestApi<UsersResponse>(`/users?page=${page}`);
+      return await this.requestApi<UsersReqresResponse>(`/users?page=${page}`);
     } catch {
       throw new HttpException('Error fetching users', HttpStatus.BAD_GATEWAY);
     }
   }
 
-  async getUserById(id: number): Promise<UserResponse> {
+  async getUserById(id: number): Promise<UserReqresResponse> {
     try {
-      return await this.requestApi<UserResponse>(`/users/${id}`);
+      return await this.requestApi<UserReqresResponse>(`/users/${id}`);
     } catch {
       throw new HttpException('Error fetching user', HttpStatus.BAD_GATEWAY);
     }
