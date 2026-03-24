@@ -21,7 +21,7 @@ export class UsersService {
   async saveUser(id: number) {
     const user: UserReqres = await this.findUserReqresById(id);
     const userTosave: CreateUserDto = {
-      userId: Number(user.id),
+      id: user.id,
       email: user.email,
       firstName: user.first_name,
       lastName: user.last_name,
@@ -29,7 +29,7 @@ export class UsersService {
     };
     const newUser = this.usersRepository.create(userTosave);
     const savedUser = await this.usersRepository.save(newUser);
-    return this.findOne(savedUser.userId);
+    return this.findOne(savedUser.id);
   }
 
   async findAllUsers() {
@@ -55,7 +55,7 @@ export class UsersService {
 
   private async findOne(id: number) {
     const user = await this.usersRepository.findOne({
-      where: { userId: id },
+      where: { id },
     });
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);

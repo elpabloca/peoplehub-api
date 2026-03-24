@@ -1,21 +1,18 @@
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
+  PrimaryColumn,
 } from 'typeorm';
 import { Exclude, Expose } from 'class-transformer';
+import { Post } from 'src/posts/entities/post.entity';
 
 @Entity({ name: 'users' })
 export class User {
-  @Exclude()
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn({ unique: true })
   id: number;
-
-  @Expose({ name: 'id' })
-  @Column({ unique: true, name: 'user_id' })
-  userId: number;
 
   @Column({ type: 'varchar', length: 255, unique: true })
   email: string;
@@ -46,4 +43,8 @@ export class User {
     name: 'updated_at',
   })
   updatedAt: Date;
+
+  @Expose({ name: 'user_id' })
+  @OneToMany(() => Post, (post) => post.userId)
+  posts: Post[];
 }
